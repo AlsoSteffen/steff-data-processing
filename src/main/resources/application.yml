@@ -7,7 +7,7 @@ spring.jmx:
 
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
-  url: jdbc:mysql://localhost:3306/data-processing?serverTimezone=Europe/Berlin
+  url: jdbc:mysql://localhost:3306/data_processing?serverTimezone=Europe/Berlin
   username: root
   password:
 
@@ -39,7 +39,7 @@ info:
     version: ${project.version}
 
 flyway:
-  url: jdbc:mysql://localhost:3306/data-processing?serverTimezone=Europe/Berlin
+  url: jdbc:mysql://localhost:3306/data_processing?serverTimezone=Europe/Berlin
   user: root
   password:
   baseline-on-migrate: true
