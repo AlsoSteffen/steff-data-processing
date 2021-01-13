@@ -14,6 +14,8 @@ public interface NetflixRepository extends PagingAndSortingRepository<Netflix, L
 
     Netflix findByDateAdded(Date date);
 
+    List<Netflix> findAllByDateAdded(Date date);
+
     @Override
     List<Netflix> findAll();
 }

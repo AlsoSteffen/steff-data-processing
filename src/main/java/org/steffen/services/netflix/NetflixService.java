@@ -34,6 +34,11 @@ public class NetflixService
         return netflixRepository.findAll();
     }
 
+    public List<Netflix> getNetflixTitles(Date date)
+    {
+        return  netflixRepository.findAllByDateAdded(date);
+    }
+
     public void updateNetflix(Netflix netflix)
     {
         netflixRepository.save(netflix);

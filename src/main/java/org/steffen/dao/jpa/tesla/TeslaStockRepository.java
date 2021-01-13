@@ -12,6 +12,8 @@ public interface TeslaStockRepository extends PagingAndSortingRepository<TeslaSt
 {
     TeslaStock findByDate(Date date);
 
+    List<TeslaStock> findAllByDate(Date date);
+
     @Override
     List<TeslaStock> findAll();
 }

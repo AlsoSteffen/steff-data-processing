@@ -2,6 +2,7 @@ package org.steffen.domain.tesla;
 
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.steffen.domain.DomainEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "tesla_stock")
 @JacksonXmlRootElement(localName = "teslaStock")
-public class TeslaStock
+public class TeslaStock implements DomainEntity
 {
     @Id
     private Date date;

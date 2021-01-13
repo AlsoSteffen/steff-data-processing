@@ -21,12 +21,17 @@ public class TeslaStockService
 
     public TeslaStock getTeslaStock(Date date)
     {
-        return  teslaStockRepository.findOne(date);
+        return  teslaStockRepository.findByDate(date);
     }
 
     public List<TeslaStock> getTeslaStocks()
     {
         return teslaStockRepository.findAll();
+    }
+
+    public List<TeslaStock> getTeslaStocks(Date date)
+    {
+        return teslaStockRepository.findAllByDate(date);
     }
 
     public void updateTeslaStock(TeslaStock teslaStock)

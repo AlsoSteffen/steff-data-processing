@@ -3,6 +3,7 @@ package org.steffen.domain.tweets;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.steffen.domain.DomainEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import java.util.Date;
 @Table(name = "tweets")
 @JacksonXmlRootElement(localName = "tweet")
 @JsonIgnoreProperties("tweets")
-public class Tweet
+public class Tweet implements DomainEntity
 {
     @Id
     private long id;

@@ -3,6 +3,7 @@ package org.steffen.domain.netflix;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.steffen.domain.DomainEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import java.util.Date;
 @Entity
 @Table(name = "netflix")
 @JacksonXmlRootElement(localName = "netflix")
-public class Netflix
+public class Netflix implements DomainEntity
 {
     @Id
     @JsonProperty

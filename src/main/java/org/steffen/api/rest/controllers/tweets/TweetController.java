@@ -1,10 +1,6 @@
 package org.steffen.api.rest.controllers.tweets;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
-import com.github.fge.jsonschema.main.JsonSchema;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.steffen.api.rest.controllers.AbstractRestHandler;
+import org.steffen.domain.DomainEntity;
 import org.steffen.domain.tweets.Tweet;
 import org.steffen.services.tweets.TweetService;
 import org.xml.sax.SAXException;
@@ -22,7 +19,6 @@ import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Date;
@@ -38,38 +34,12 @@ public class TweetController extends AbstractRestHandler
     TweetService tweetService;
 
     private final String requireSpecificStock = "The date of an existing tweet resource";
-    
-    
-    private boolean isTweetValidJson(Tweet tweet)
-    {
-        try
-        {
-            File jsonSchemaFile = new File("src\\main\\resources\\schema\\tweets\\tweets_schema.json");
-            URI uri = jsonSchemaFile.toURI();
 
-            JsonNode jsonNode = objectMapper.valueToTree(tweet);
-            JsonSchema jsonSchema = jsonSchemaFactory.getJsonSchema(uri.toString());
-            ProcessingReport validationResult = jsonSchema.validate(jsonNode);
+    private final File jsonSchemaFile = new File("src\\main\\resources\\schema\\tweets\\tweets_schema.json");
+    private final File xmlSchemaFile = new File("src\\main\\resources\\schema\\tweets\\tweets_schema.xsd");
 
-            // print validation errors
-            if (validationResult.isSuccess())
-            {
-                System.out.println("no validation errors - json :^)");
-                return true;
-            }
-            else
-            {
-                validationResult.forEach(vm -> System.out.println(vm.getMessage()));
-            }
-        }
-        catch (ProcessingException e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private boolean isTweetValidXml(Tweet tweet)
+    @Override
+    protected boolean isEntityValidXml(DomainEntity entity)
     {
         try
         {
@@ -79,12 +49,10 @@ public class TweetController extends AbstractRestHandler
                     "<tweets   xmlns=\"https://www.w3schools.com\"\n" +
                     "                 xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
                     "                 xsi:schemaLocation=\"https://www.w3schools.com tweets_schema.xsd\">";
-            xml += xmlMapper.writeValueAsString(tweet);
+            xml += xmlMapper.writeValueAsString(entity);
             xml += "</tweets>";
 
-            String xsdPath = "src\\main\\resources\\schema\\tweets\\tweets_schema.xsd";
-
-            Schema schema = factory.newSchema(new File(xsdPath));
+            Schema schema = factory.newSchema(xmlSchemaFile);
 
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
@@ -106,7 +74,7 @@ public class TweetController extends AbstractRestHandler
     @ApiOperation(value = "Create a tweet resource")
     public void createTweet(@RequestBody Tweet tweet)
     {
-        if (isTweetValidXml(tweet) || isTweetValidJson(tweet))
+        if (isEntityValidXml(tweet) || isEntityValidJson(tweet, jsonSchemaFile))
         {
             this.tweetService.createTweet(tweet);
         }
@@ -116,14 +84,14 @@ public class TweetController extends AbstractRestHandler
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get a single tweet resource based on date")
     public List<Tweet> getJsonTweetBasedOnDate(@ApiParam(value = requireSpecificStock, required = true)
-                                    @PathVariable("date") String date)
+                                               @PathVariable("date") String date)
     {
         try
         {
             Date formattedDate = dateFormat.parse(date);
 
             tweetService.getTweets(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            tweetService.getTweets(formattedDate).forEach(this::isTweetValidJson);
+            tweetService.getTweets(formattedDate).forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
 
             return tweetService.getTweets(formattedDate);
         }
@@ -138,14 +106,14 @@ public class TweetController extends AbstractRestHandler
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get a single tweet resource based on date")
     public List<Tweet> getXmlTweetsBasedOnDate(@ApiParam(value = requireSpecificStock, required = true)
-                                    @PathVariable("date") String date)
+                                               @PathVariable("date") String date)
     {
         try
         {
             Date formattedDate = dateFormat.parse(date);
 
             tweetService.getTweets(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            tweetService.getTweets(formattedDate).forEach(this::isTweetValidXml);
+            tweetService.getTweets(formattedDate).forEach(this::isEntityValidXml);
 
             return tweetService.getTweets(formattedDate);
         }
@@ -156,14 +124,14 @@ public class TweetController extends AbstractRestHandler
         return null;
     }
 
-    @GetMapping(value = "/json/{id}", produces = {"application/json"})
+    @GetMapping(value = "/json/id={id}", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get a single tweet resource based on id")
     public Tweet getJsonTweetBasedOnId(@ApiParam(value = requireSpecificStock, required = true)
-                                    @PathVariable("id") Long id)
+                                       @PathVariable("id") Long id)
     {
         checkResourceFound(tweetService.getTweet(id));
-        if (isTweetValidJson(tweetService.getTweet(id)))
+        if (isEntityValidJson(tweetService.getTweet(id), jsonSchemaFile))
         {
             return tweetService.getTweet(id);
         }
@@ -174,10 +142,10 @@ public class TweetController extends AbstractRestHandler
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get a single tweet resource based on id")
     public Tweet getXmlTweetBasedOnId(@ApiParam(value = requireSpecificStock, required = true)
-                                    @PathVariable("id") Long id)
+                                      @PathVariable("id") Long id)
     {
         checkResourceFound(tweetService.getTweet(id));
-        if (isTweetValidXml(tweetService.getTweet(id)))
+        if (isEntityValidXml(tweetService.getTweet(id)))
         {
             return tweetService.getTweet(id);
         }
@@ -190,7 +158,7 @@ public class TweetController extends AbstractRestHandler
     public Iterable<Tweet> getTweetsAsXml()
     {
         checkResourceFound(tweetService.getTweets());
-        tweetService.getTweets().forEach(this::isTweetValidXml);
+        tweetService.getTweets().forEach(this::isEntityValidXml);
         return tweetService.getTweets();
     }
 
@@ -200,7 +168,7 @@ public class TweetController extends AbstractRestHandler
     public Iterable<Tweet> getTweetsAsJson()
     {
         checkResourceFound(tweetService.getTweets());
-        tweetService.getTweets().forEach(this::isTweetValidJson);
+        tweetService.getTweets().forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
         return tweetService.getTweets();
     }
 
@@ -208,14 +176,14 @@ public class TweetController extends AbstractRestHandler
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Update any existing tweet resource based on id")
     public void updateTweet(@ApiParam(value = requireSpecificStock, required = true)
-                                 @PathVariable("id") Long id,
-                                 @RequestBody Tweet tweet) throws DataFormatException
+                            @PathVariable("id") Long id,
+                            @RequestBody Tweet tweet) throws DataFormatException
     {
         checkResourceFound(tweetService.getTweet(id));
 
         if (id != tweet.getId()) throw new DataFormatException("Id does not match!");
 
-        if (isTweetValidXml(tweet) || isTweetValidJson(tweet))
+        if (isEntityValidXml(tweet) || isEntityValidJson(tweet, jsonSchemaFile))
         {
             this.tweetService.updateTweet(tweet);
         }
@@ -225,8 +193,8 @@ public class TweetController extends AbstractRestHandler
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Update any existing tweet resource based on date")
     public void updateTweet(@ApiParam(value = requireSpecificStock, required = true)
-                                 @PathVariable("date") String date,
-                                 @RequestBody Tweet tweet) throws DataFormatException
+                            @PathVariable("date") String date,
+                            @RequestBody Tweet tweet)
     {
         try
         {
@@ -234,7 +202,7 @@ public class TweetController extends AbstractRestHandler
 
             checkResourceFound(tweetService.getTweet(formattedDate));
 
-            if (isTweetValidXml(tweetService.getTweet(formattedDate)))
+            if (isEntityValidXml(tweetService.getTweet(formattedDate)))
             {
                 tweetService.updateTweet(tweet);
             }
@@ -245,11 +213,11 @@ public class TweetController extends AbstractRestHandler
         }
     }
 
-    @DeleteMapping(value = "?id={id}")
+    @DeleteMapping(value = "/id={id}")
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Delete a single tweet resource")
     public void deleteTweet(@ApiParam(value = requireSpecificStock, required = true)
-                                 @PathVariable("id") Long id)
+                            @PathVariable("id") Long id)
     {
         checkResourceFound(tweetService.getTweet(id));
         tweetService.deleteTweet(id);
