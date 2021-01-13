@@ -1,0 +1,11 @@
+{
+  "$schema": "tweets_schema.json",
+  "id": 8,
+  "link": "1",
+  "content": "1",
+  "date": 1286661600000,
+  "retweets": 1,
+  "favorites": 1,
+  "mentions": "test",
+  "tags": "tagTest"
+}

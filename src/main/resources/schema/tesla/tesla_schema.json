@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "A Netflix Title",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "number",
+      "pattern": "^[0-9]{2}/[0-9]{2}/[0-9]{4}$",
+      "maxItems": 1,
+      "minimum": 1
+    },
+    "open": {
+      "type": "number",
+      "maxItems": 1
+    },
+    "high": {
+      "type": "number",
+      "maxItems": 1
+    },
+    "low": {
+      "type": "number",
+      "maxItems": 1
+    },
+    "close": {
+      "type": "number",
+      "maxItems": 1
+    },
+    "volume": {
+      "type": "number",
+      "maxItems": 1
+    },
+    "adj_close": {
+      "type": "number",
+      "maxItems": 1
+    }
+  }
+}

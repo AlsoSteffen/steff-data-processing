@@ -1,0 +1,10 @@
+{
+  "$schema": "tesla_schema.json",
+  "date": 1286661600000,
+  "open": 18.513,
+  "high": 18.513,
+  "low": 18.513,
+  "close": 18.513,
+  "volume": 5,
+  "adjClose": 28.513
+}

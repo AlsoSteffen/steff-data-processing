@@ -2,5 +2,11 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1_0__create_stock_table.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1_1__create_tweet_table.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1_2__create_netflix_table.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/farm_upstate/V1_2__create_mentions_table.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/farm_upstate/V1_3__create_tweet_mentions.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/farm_upstate/V1_4__create_tags_table.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/farm_upstate/V1_5__create_tweet_tags.sql" dialect="MySQL" />
   </component>
 </project>
