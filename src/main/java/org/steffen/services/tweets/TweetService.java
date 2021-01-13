@@ -21,12 +21,17 @@ public class TweetService
 
     public Tweet getTweet(Long id)
     {
-        return  tweetRepository.findOne(id);
+        return tweetRepository.findOne(id);
     }
 
     public Tweet getTweet(Date date)
     {
         return tweetRepository.findByDate(date);
+    }
+
+    public List<Tweet> getTweets(Date date)
+    {
+        return tweetRepository.findAllByDate(date);
     }
 
     public List<Tweet> getTweets()

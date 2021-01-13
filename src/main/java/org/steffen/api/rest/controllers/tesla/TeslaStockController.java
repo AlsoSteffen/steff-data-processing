@@ -1,13 +1,10 @@
 package org.steffen.api.rest.controllers.tesla;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
-import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -44,8 +41,6 @@ public class TeslaStockController extends AbstractRestHandler
 
     private boolean isTeslaStockValidJson(TeslaStock teslaStock)
     {
-        ObjectMapper objectMapper = new ObjectMapper().disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
-        JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.byDefault();
         try
         {
             File jsonSchemaFile = new File("src\\main\\resources\\schema\\tesla\\tesla_schema.json");
@@ -112,7 +107,6 @@ public class TeslaStockController extends AbstractRestHandler
     {
         if (isTeslaStockValidXml(teslaStock) || isTeslaStockValidJson(teslaStock))
         {
-            System.out.println(teslaStock.getClose());
             this.teslaStockService.createTeslaStock(teslaStock);
         }
     }
@@ -124,7 +118,7 @@ public class TeslaStockController extends AbstractRestHandler
                                     @PathVariable("date") Date date)
     {
         checkResourceFound(teslaStockService.getTeslaStock(date));
-        if (isTeslaStockValidXml(teslaStockService.getTeslaStock(date)) | isTeslaStockValidJson(teslaStockService.getTeslaStock(date)))
+        if (isTeslaStockValidXml(teslaStockService.getTeslaStock(date)) || isTeslaStockValidJson(teslaStockService.getTeslaStock(date)))
         {
             return teslaStockService.getTeslaStock(date);
         }

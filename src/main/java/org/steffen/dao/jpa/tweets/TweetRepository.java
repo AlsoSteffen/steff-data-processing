@@ -14,6 +14,8 @@ public interface TweetRepository extends PagingAndSortingRepository<Tweet, Long>
 
     Tweet findByDate(Date date);
 
+    List<Tweet> findAllByDate(Date date);
+
     @Override
     List<Tweet> findAll();
 }
