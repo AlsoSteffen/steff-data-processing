@@ -145,7 +145,7 @@ public class Netflix
 
     public void setDateAdded(String date)
     {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
 
         try
         {

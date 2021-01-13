@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<tweets   xmlns="https://www.w3schools.com"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="https://www.w3schools.com tweets_schema.xsd">
+    <tweet>
+        <id>81145628</id>
+        <link>test</link>
+        <content>test</content>
+        <date>415151531</date>
+        <retweets>131</retweets>
+        <favorites>2515</favorites>
+        <mentions>1214956456</mentions>
+        <tags>test</tags>
+    </tweet>
+
+</tweets>

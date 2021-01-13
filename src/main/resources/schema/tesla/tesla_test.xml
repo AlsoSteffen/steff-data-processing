@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<teslaStocks xmlns="https://www.w3schools.com"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://www.w3schools.com tesla_schema.xsd">
+
+    <teslaStock>
+        <date>1286661600000</date>
+        <open>1.0</open>
+        <high>2.0</high>
+        <low>3.0</low>
+        <close>4.0</close>
+        <volume>5</volume>
+        <adjClose>6.0</adjClose>
+    </teslaStock>
+
+</teslaStocks>

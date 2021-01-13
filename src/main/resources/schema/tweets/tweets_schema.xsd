@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://www.w3schools.com"
+           elementFormDefault="qualified"
+           xmlns="https://www.w3schools.com">
+
+    <xs:element name="tweets">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tweet" type="tweet" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="tweet">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="1" />
+            <xs:element name="link" type="xs:string" minOccurs="1" />
+            <xs:element name="content" type="xs:string" minOccurs="1" />
+            <xs:element name="date" type="xs:long" minOccurs="1" />
+            <xs:element name="retweets" type="xs:int" minOccurs="1" />
+            <xs:element name="favorites" type="xs:int" minOccurs="1" />
+            <xs:element name="mentions" type="xs:string" minOccurs="1" />
+            <xs:element name="tags" type="xs:string" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+</xs:schema>

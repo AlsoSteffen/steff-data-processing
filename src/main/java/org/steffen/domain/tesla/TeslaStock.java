@@ -1,18 +1,19 @@
 package org.steffen.domain.tesla;
 
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 @Table(name = "tesla_stock")
-@XmlRootElement
+@JacksonXmlRootElement(localName = "teslaStock")
 public class TeslaStock
 {
     @Id

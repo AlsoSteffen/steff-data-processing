@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<netflixTitles   xmlns="https://www.w3schools.com"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="https://www.w3schools.com netflix_schema.xsd">
+    <netflix>
+      <id>81145628</id>
+      <titleType>Movie</titleType>
+      <title>hello</title>
+      <director>hello</director>
+      <cast>hello</cast>
+      <country>hello</country>
+      <dateAdded>1214956456</dateAdded>
+      <releaseYear>2000</releaseYear>
+      <rating>hello</rating>
+      <duration>hello</duration>
+      <category>Comedies</category>
+      <description>hello</description>
+    </netflix>
+
+</netflixTitles>
