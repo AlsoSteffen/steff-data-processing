@@ -80,7 +80,7 @@ public class NetflixController extends AbstractRestHandler
     @ApiOperation(value = "Create a netflix resource")
     public void createNetflix(@RequestBody Netflix netflix)
     {
-        if (isEntityValidXml(netflix))
+        if (isEntityValidJson(netflix, jsonSchemaFile))
         {
             this.netflixService.createNetflix(netflix);
         }
@@ -103,7 +103,7 @@ public class NetflixController extends AbstractRestHandler
 
             for (Netflix netflix : netflixService.getNetflixTitles(formattedDate))
             {
-                if (isEntityValidXml(netflix))
+                if (isEntityValidJson(netflix, jsonSchemaFile))
                 {
                     validTitles.add(netflix);
                 }
@@ -219,6 +219,26 @@ public class NetflixController extends AbstractRestHandler
         }
 
         return validTitles;
+    }
+
+    @GetMapping(value = "/count={date}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @ApiOperation(value = "Get the number of netflix titles released in a day")
+    public Integer getNumberOnTweetsBasedOnDate(@ApiParam(value = requireSpecificStock, required = true)
+                                                @PathVariable("date") String date)
+    {
+        try
+        {
+            Date formattedDate = dateFormat.parse(date);
+
+            checkResourceFound(netflixService.getNetflixTitles(formattedDate));
+            return netflixService.getNetflixTitles(formattedDate).size();
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @PutMapping(value = "/id={id}", consumes = {"application/xml", "application/json"})

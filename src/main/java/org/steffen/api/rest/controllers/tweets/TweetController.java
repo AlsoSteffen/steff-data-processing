@@ -101,7 +101,7 @@ public class TweetController extends AbstractRestHandler
             tweetService.getTweets(formattedDate).forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
             for (Tweet tweet : tweetService.getTweets(formattedDate))
             {
-                if (isEntityValidXml(tweet))
+                if (isEntityValidJson(tweet, jsonSchemaFile))
                 {
                     validTweets.add(tweet);
                 }
@@ -131,7 +131,7 @@ public class TweetController extends AbstractRestHandler
             tweetService.getTweets(formattedDate).forEach(this::isEntityValidXml);
             for (Tweet tweet : tweetService.getTweets(formattedDate))
             {
-                if (isEntityValidJson(tweet, jsonSchemaFile))
+                if (isEntityValidXml(tweet))
                 {
                     validTweets.add(tweet);
                 }
@@ -184,7 +184,7 @@ public class TweetController extends AbstractRestHandler
         tweetService.getTweets().forEach(this::isEntityValidXml);
         for (Tweet tweet : tweetService.getTweets())
         {
-            if (isEntityValidJson(tweet, jsonSchemaFile))
+            if (isEntityValidXml(tweet))
             {
                 validTweets.add(tweet);
             }
