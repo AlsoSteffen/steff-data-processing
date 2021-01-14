@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.zip.DataFormatException;
 
 @RestController
@@ -39,8 +41,13 @@ public class TeslaStockController extends AbstractRestHandler
     private final File jsonSchemaFile = new File("src\\main\\resources\\schema\\tesla\\tesla_schema.json");
     private final File xmlSchemaFile = new File("src\\main\\resources\\schema\\tesla\\tesla_schema.xsd");
 
+    /**
+     * see - AbstractRestHandler.isEntityValidXml
+     * @param entity - DomainEntity to check structure
+     * @return boolean - whether the xml is valid or not
+     */
     @Override
-    protected boolean isEntityValidXml(DomainEntity teslaStock)
+    protected boolean isEntityValidXml(DomainEntity entity)
     {
         try
         {
@@ -50,7 +57,7 @@ public class TeslaStockController extends AbstractRestHandler
                     "<teslaStocks xmlns=\"https://www.w3schools.com\"\n" +
                     "             xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
                     "             xsi:schemaLocation=\"https://www.w3schools.com tesla_schema.xsd\">";
-            xml += xmlMapper.writeValueAsString(teslaStock);
+            xml += xmlMapper.writeValueAsString(entity);
             xml += "</teslaStocks>";
 
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -69,6 +76,11 @@ public class TeslaStockController extends AbstractRestHandler
         return false;
     }
 
+    /**
+     * Creating this object needs the date format of MM/dd/yyyy
+     * because of the date format in the dataset
+     * @param teslaStock - TeslaStock Object created from the input
+     */
     @PostMapping(value = "",
                  consumes = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -81,7 +93,7 @@ public class TeslaStockController extends AbstractRestHandler
         }
     }
 
-    @GetMapping(value = "/json/date={date}")
+    @GetMapping(value = "/json/date={date}", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get a single teslaStock resource based on date")
     public Iterable<TeslaStock> getJsonTeslaStockBasedOnDate(@ApiParam(value = requireSpecificStock, required = true)
@@ -91,19 +103,26 @@ public class TeslaStockController extends AbstractRestHandler
         {
             Date formattedDate = dateFormat.parse(date);
 
-            teslaStockService.getTeslaStocks(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            teslaStockService.getTeslaStocks(formattedDate).forEach(teslaStock -> isEntityValidJson(teslaStock, jsonSchemaFile));
+            List<TeslaStock> validStocks = new ArrayList<>();
 
-            return teslaStockService.getTeslaStocks(formattedDate);
+            checkResourceFound(teslaStockService.getTeslaStocks(formattedDate));
+            teslaStockService.getTeslaStocks(formattedDate).forEach(teslaStock -> isEntityValidJson(teslaStock, jsonSchemaFile));
+            for (TeslaStock teslaStock : teslaStockService.getTeslaStocks(formattedDate))
+            {
+                if (isEntityValidJson(teslaStock, jsonSchemaFile))
+                {
+                    validStocks.add(teslaStock);
+                }
+            }
+            return validStocks;
         }
         catch (ParseException e)
         {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    @GetMapping(value = "/xml/date={date}")
+    @GetMapping(value = "/xml/date={date}", produces = {"application/xml"})
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get a single teslaStock resource based on date")
     public Iterable<TeslaStock> getXmlTeslaStockBasedOnDate(@ApiParam(value = requireSpecificStock, required = true)
@@ -113,10 +132,18 @@ public class TeslaStockController extends AbstractRestHandler
         {
             Date formattedDate = dateFormat.parse(date);
 
-            teslaStockService.getTeslaStocks(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            teslaStockService.getTeslaStocks(formattedDate).forEach(this::isEntityValidXml);
+            List<TeslaStock> validStocks = new ArrayList<>();
 
-            return teslaStockService.getTeslaStocks(formattedDate);
+            checkResourceFound(teslaStockService.getTeslaStocks(formattedDate));
+            teslaStockService.getTeslaStocks(formattedDate).forEach(this::isEntityValidXml);
+            for (TeslaStock teslaStock : teslaStockService.getTeslaStocks(formattedDate))
+            {
+                if (isEntityValidXml(teslaStock))
+                {
+                    validStocks.add(teslaStock);
+                }
+            }
+            return validStocks;
         }
         catch (ParseException e)
         {
@@ -130,19 +157,37 @@ public class TeslaStockController extends AbstractRestHandler
     @ApiOperation(value = "Get all teslaStock resources")
     public Iterable<TeslaStock> getTeslaStocksAsXml()
     {
+        List<TeslaStock> validStocks = new ArrayList<>();
+
         checkResourceFound(teslaStockService.getTeslaStocks());
         teslaStockService.getTeslaStocks().forEach(this::isEntityValidXml);
-        return teslaStockService.getTeslaStocks();
+        for (TeslaStock teslaStock : teslaStockService.getTeslaStocks())
+        {
+            if (isEntityValidXml(teslaStock))
+            {
+                validStocks.add(teslaStock);
+            }
+        }
+        return validStocks;
     }
 
-    @GetMapping(value = "/json", produces = {"application/json"})
+    @GetMapping(value = {"","/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get all teslaStock resources")
     public Iterable<TeslaStock> getTeslaStocksAsJson()
     {
+        List<TeslaStock> validStocks = new ArrayList<>();
+
         checkResourceFound(teslaStockService.getTeslaStocks());
         teslaStockService.getTeslaStocks().forEach(teslaStock -> isEntityValidJson(teslaStock, jsonSchemaFile));
-        return teslaStockService.getTeslaStocks();
+        for (TeslaStock teslaStock : teslaStockService.getTeslaStocks())
+        {
+            if (isEntityValidJson(teslaStock, jsonSchemaFile))
+            {
+                validStocks.add(teslaStock);
+            }
+        }
+        return validStocks;
     }
 
     @PutMapping(value = "/{date}", consumes = {"application/xml", "application/json"})

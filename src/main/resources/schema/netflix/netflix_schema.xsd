@@ -24,7 +24,7 @@
             <xs:element name="releaseYear" type="releaseYear"/>
             <xs:element name="rating" type="xs:string"/>
             <xs:element name="duration" type="xs:string"/>
-            <xs:element name="category" type="category"/>
+            <xs:element name="category" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
@@ -33,6 +33,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="Movie"/>
             <xs:enumeration value="Series"/>
+            <xs:enumeration value="TV Show"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -42,74 +43,4 @@
             <xs:maxInclusive value="2020"/>
         </xs:restriction>
     </xs:simpleType>
-
-    <xs:simpleType name="category">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Action and Adventure"/>
-            <xs:enumeration value="Anime Features"/>
-            <xs:enumeration value="Anime Series"/>
-            <xs:enumeration value="AnimeFeatures"/>
-            <xs:enumeration value="AnimeSeries"/>
-            <xs:enumeration value="BritishTVShows"/>
-            <xs:enumeration value="Children and Family Movies"/>
-            <xs:enumeration value="Children and FamilyMovies"/>
-            <xs:enumeration value="Classic and CultTV"/>
-            <xs:enumeration value="ClassicMovies"/>
-            <xs:enumeration value="Comedies"/>
-            <xs:enumeration value="CrimeTVShows"/>
-            <xs:enumeration value="CultMovies"/>
-            <xs:enumeration value="Documentaries"/>
-            <xs:enumeration value="Dramas"/>
-            <xs:enumeration value="Faith and Spirituality"/>
-            <xs:enumeration value="Horror Movies"/>
-            <xs:enumeration value="HorrorMovies"/>
-            <xs:enumeration value="Independent Movies"/>
-            <xs:enumeration value="IndependentMovies"/>
-            <xs:enumeration value="International Movies"/>
-            <xs:enumeration value="International TV Shows"/>
-            <xs:enumeration value="InternationalTVShows"/>
-            <xs:enumeration value="InternationalMovies"/>
-            <xs:enumeration value="Kids' TV"/>
-            <xs:enumeration value="Kids'TV"/>
-            <xs:enumeration value="KoreanTVShows"/>
-            <xs:enumeration value="LGBTQMovies"/>
-            <xs:enumeration value="Movies"/>
-            <xs:enumeration value="Music and Musicals"/>
-            <xs:enumeration value="Reality TV"/>
-            <xs:enumeration value="RealityTV"/>
-            <xs:enumeration value="RomanticMovies"/>
-            <xs:enumeration value="Romantic Movies"/>
-            <xs:enumeration value="Science and NatureTV"/>
-            <xs:enumeration value="Sci-Fi and Fantasy"/>
-            <xs:enumeration value="Spanish-LanguageTVShows"/>
-            <xs:enumeration value="SportsMovies"/>
-            <xs:enumeration value="Sports Movies"/>
-            <xs:enumeration value="Stand-Up Comedy"/>
-            <xs:enumeration value="Stand-Up Comedy and Talk Shows"/>
-            <xs:enumeration value="Stand-UpComedy"/>
-            <xs:enumeration value="Stand-UpComedy and TalkShows"/>
-            <xs:enumeration value="TeenTVShows"/>
-            <xs:enumeration value="Thrillers"/>
-            <xs:enumeration value="TV Action and Adventure"/>
-            <xs:enumeration value="TV Comedies"/>
-            <xs:enumeration value="TV Dramas"/>
-            <xs:enumeration value="TV Shows"/>
-            <xs:enumeration value="TVAction and Adventure"/>
-            <xs:enumeration value="TVComedies"/>
-            <xs:enumeration value="TVDramas"/>
-            <xs:enumeration value="TVHorror"/>
-            <xs:enumeration value="TVMysteries"/>
-            <xs:enumeration value="TVSci-Fi and Fantasy"/>
-            <xs:enumeration value="TVThrillers"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-
-    <xs:simpleType name="NamesDesc">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="[A-Z][a-zA-Z]*( [A-Z][a-zA-Z]*)*"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-
 </xs:schema>

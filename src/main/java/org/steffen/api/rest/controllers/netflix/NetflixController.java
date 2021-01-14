@@ -38,6 +38,11 @@ public class NetflixController extends AbstractRestHandler
     private final File jsonSchemaFile = new File("src\\main\\resources\\schema\\netflix\\netflix_schema.json");
     private final File xmlSchemaFile = new File("src\\main\\resources\\schema\\netflix\\netflix_schema.xsd");
 
+    /**
+     * see - AbstractRestHandler.isEntityValidXml
+     * @param entity - DomainEntity to check structure
+     * @return boolean - whether the xml is valid or not
+     */
     @Override
     protected boolean isEntityValidXml(DomainEntity entity)
     {
@@ -162,7 +167,7 @@ public class NetflixController extends AbstractRestHandler
         return netflixService.getNetflix();
     }
 
-    @GetMapping(value = "/json", produces = {"application/json"})
+    @GetMapping(value = {"", "/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get all netflix resources")
     public Iterable<Netflix> getNetflixAsJson()

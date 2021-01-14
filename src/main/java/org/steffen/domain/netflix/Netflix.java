@@ -1,7 +1,6 @@
 package org.steffen.domain.netflix;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.steffen.domain.DomainEntity;
 
@@ -9,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,63 +18,39 @@ import java.util.Date;
 public class Netflix implements DomainEntity
 {
     @Id
-    @JsonProperty
-    @XmlElement
     private long id;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String titleType;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String title;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String director;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String cast;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String country;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private Date dateAdded;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private int releaseYear;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String rating;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String duration;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String category;
 
     @Column
-    @JsonProperty
-    @XmlElement
     private String description;
 
     public long getId()
@@ -144,6 +118,11 @@ public class Netflix implements DomainEntity
         return dateAdded;
     }
 
+    /**
+     * This setter uses Date Format MMMM dd, yyyy because of the
+     * format used in the data set
+     * @param date String date to convert to epoch time format
+     */
     public void setDateAdded(String date)
     {
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");

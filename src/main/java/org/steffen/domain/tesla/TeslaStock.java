@@ -43,9 +43,14 @@ public class TeslaStock implements DomainEntity
         return date;
     }
 
+    /**
+     * This setter uses Date Format MM/dd/yyyy because of the
+     * stupid US date format used in the data set
+     * @param date String date in String format to convert into Epoch time
+     */
     public void setDate(String date)
     {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
         try
         {

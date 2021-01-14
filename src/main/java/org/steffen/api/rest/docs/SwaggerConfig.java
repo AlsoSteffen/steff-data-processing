@@ -21,8 +21,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import({BeanValidatorPluginsConfiguration.class})
 public class SwaggerConfig
 {
-
-
     @Bean
     public Docket api()
     {
@@ -43,7 +41,7 @@ public class SwaggerConfig
                 .description(description)
                 .license("Unlicensed")
                 .licenseUrl("")
-                .version("0.4.0")
+                .version("1.0")
                 .build();
     }
 }

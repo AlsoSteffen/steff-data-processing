@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -38,6 +39,11 @@ public class TweetController extends AbstractRestHandler
     private final File jsonSchemaFile = new File("src\\main\\resources\\schema\\tweets\\tweets_schema.json");
     private final File xmlSchemaFile = new File("src\\main\\resources\\schema\\tweets\\tweets_schema.xsd");
 
+    /**
+     * see - AbstractRestHandler.isEntityValidXml
+     * @param entity - DomainEntity to check structure
+     * @return boolean - whether the xml is valid or not
+     */
     @Override
     protected boolean isEntityValidXml(DomainEntity entity)
     {
@@ -157,9 +163,18 @@ public class TweetController extends AbstractRestHandler
     @ApiOperation(value = "Get all tweet resources")
     public Iterable<Tweet> getTweetsAsXml()
     {
+        List<Tweet> validTweets = new ArrayList<>();
+
         checkResourceFound(tweetService.getTweets());
-        tweetService.getTweets().forEach(this::isEntityValidXml);
-        return tweetService.getTweets();
+        tweetService.getTweets().forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
+        for (Tweet tweet : tweetService.getTweets())
+        {
+            if (isEntityValidJson(tweet, jsonSchemaFile))
+            {
+                validTweets.add(tweet);
+            }
+        }
+        return validTweets;
     }
 
     @GetMapping(value = "/json", produces = {"application/json"})
@@ -167,9 +182,18 @@ public class TweetController extends AbstractRestHandler
     @ApiOperation(value = "Get all tweet resources")
     public Iterable<Tweet> getTweetsAsJson()
     {
+        List<Tweet> validTweets = new ArrayList<>();
+
         checkResourceFound(tweetService.getTweets());
         tweetService.getTweets().forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
-        return tweetService.getTweets();
+        for (Tweet tweet : tweetService.getTweets())
+        {
+            if (isEntityValidXml(tweet))
+            {
+                validTweets.add(tweet);
+            }
+        }
+        return validTweets;
     }
 
     @PutMapping(value = "/id={id}", consumes = {"application/xml", "application/json"})
