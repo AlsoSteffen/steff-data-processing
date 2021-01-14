@@ -73,7 +73,6 @@ public class TweetController extends AbstractRestHandler
         return false;
     }
 
-
     @PostMapping(value = "",
                  consumes = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -192,6 +191,27 @@ public class TweetController extends AbstractRestHandler
         }
         return validTweets;
     }
+
+    @GetMapping(value = "/count={date}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @ApiOperation(value = "Get the number of tweets in a day")
+    public Integer getNumberOnTweetsBasedOnDate(@ApiParam(value = requireSpecificStock, required = true)
+                                                    @PathVariable("date") String date)
+    {
+        try
+        {
+            Date formattedDate = dateFormat.parse(date);
+
+            checkResourceFound(tweetService.getTweets(formattedDate));
+            return tweetService.getTweets(formattedDate).size();
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
     @GetMapping(value = "/json", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
