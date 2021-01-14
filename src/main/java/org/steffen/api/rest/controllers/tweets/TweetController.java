@@ -96,10 +96,18 @@ public class TweetController extends AbstractRestHandler
         {
             Date formattedDate = dateFormat.parse(date);
 
-            tweetService.getTweets(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            tweetService.getTweets(formattedDate).forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
+            List<Tweet> validTweets = new ArrayList<>();
 
-            return tweetService.getTweets(formattedDate);
+            checkResourceFound(tweetService.getTweets(formattedDate));
+            tweetService.getTweets(formattedDate).forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
+            for (Tweet tweet : tweetService.getTweets(formattedDate))
+            {
+                if (isEntityValidXml(tweet))
+                {
+                    validTweets.add(tweet);
+                }
+            }
+            return validTweets;
         }
         catch (ParseException e)
         {
@@ -118,10 +126,18 @@ public class TweetController extends AbstractRestHandler
         {
             Date formattedDate = dateFormat.parse(date);
 
-            tweetService.getTweets(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            tweetService.getTweets(formattedDate).forEach(this::isEntityValidXml);
+            List<Tweet> validTweets = new ArrayList<>();
 
-            return tweetService.getTweets(formattedDate);
+            checkResourceFound(tweetService.getTweets(formattedDate));
+            tweetService.getTweets(formattedDate).forEach(this::isEntityValidXml);
+            for (Tweet tweet : tweetService.getTweets(formattedDate))
+            {
+                if (isEntityValidJson(tweet, jsonSchemaFile))
+                {
+                    validTweets.add(tweet);
+                }
+            }
+            return validTweets;
         }
         catch (ParseException e)
         {
@@ -166,7 +182,7 @@ public class TweetController extends AbstractRestHandler
         List<Tweet> validTweets = new ArrayList<>();
 
         checkResourceFound(tweetService.getTweets());
-        tweetService.getTweets().forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
+        tweetService.getTweets().forEach(this::isEntityValidXml);
         for (Tweet tweet : tweetService.getTweets())
         {
             if (isEntityValidJson(tweet, jsonSchemaFile))

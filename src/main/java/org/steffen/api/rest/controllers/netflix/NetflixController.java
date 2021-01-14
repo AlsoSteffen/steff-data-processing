@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -95,10 +96,20 @@ public class NetflixController extends AbstractRestHandler
         {
             Date formattedDate = dateFormat.parse(date);
 
-            netflixService.getNetflixTitles(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            netflixService.getNetflixTitles(formattedDate).forEach(netflix -> isEntityValidJson(netflix, jsonSchemaFile));
+            List<Netflix> validTitles = new ArrayList<>();
 
-            return netflixService.getNetflixTitles(formattedDate);
+            checkResourceFound(netflixService.getNetflixTitles(formattedDate));
+            netflixService.getNetflixTitles(formattedDate).forEach(teslaStock -> isEntityValidJson(teslaStock, jsonSchemaFile));
+
+            for (Netflix netflix : netflixService.getNetflixTitles(formattedDate))
+            {
+                if (isEntityValidXml(netflix))
+                {
+                    validTitles.add(netflix);
+                }
+            }
+
+            return validTitles;
         }
         catch (ParseException e)
         {
@@ -117,10 +128,19 @@ public class NetflixController extends AbstractRestHandler
         {
             Date formattedDate = dateFormat.parse(date);
 
-            netflixService.getNetflixTitles(formattedDate).forEach(AbstractRestHandler::checkResourceFound);
-            netflixService.getNetflixTitles(formattedDate).forEach(this::isEntityValidXml);
+            List<Netflix> validTitles = new ArrayList<>();
 
-            return netflixService.getNetflixTitles(formattedDate);
+            checkResourceFound(netflixService.getNetflix(formattedDate));
+            netflixService.getNetflixTitles(formattedDate).forEach(this::isEntityValidXml);
+            for (Netflix netflix : netflixService.getNetflixTitles(formattedDate))
+            {
+                if (isEntityValidXml(netflix))
+                {
+                    validTitles.add(netflix);
+                }
+            }
+
+            return validTitles;
         }
         catch (ParseException e)
         {
@@ -162,9 +182,21 @@ public class NetflixController extends AbstractRestHandler
     @ApiOperation(value = "Get all netflix resources")
     public Iterable<Netflix> getNetflixAsXml()
     {
+
+        List<Netflix> validTitles = new ArrayList<>();
+
         checkResourceFound(netflixService.getNetflix());
         netflixService.getNetflix().forEach(this::isEntityValidXml);
-        return netflixService.getNetflix();
+
+        for (Netflix netflix : netflixService.getNetflix())
+        {
+            if (isEntityValidXml(netflix))
+            {
+                validTitles.add(netflix);
+            }
+        }
+
+        return validTitles;
     }
 
     @GetMapping(value = {"", "/json"}, produces = {"application/json"})
@@ -172,9 +204,21 @@ public class NetflixController extends AbstractRestHandler
     @ApiOperation(value = "Get all netflix resources")
     public Iterable<Netflix> getNetflixAsJson()
     {
+
+        List<Netflix> validTitles = new ArrayList<>();
+
         checkResourceFound(netflixService.getNetflix());
-        netflixService.getNetflix().forEach(netflix -> isEntityValidJson(netflix, jsonSchemaFile));
-        return netflixService.getNetflix();
+        netflixService.getNetflix().forEach(teslaStock -> isEntityValidJson(teslaStock, jsonSchemaFile));
+
+        for (Netflix netflix : netflixService.getNetflix())
+        {
+            if (isEntityValidJson(netflix, jsonSchemaFile))
+            {
+                validTitles.add(netflix);
+            }
+        }
+
+        return validTitles;
     }
 
     @PutMapping(value = "/id={id}", consumes = {"application/xml", "application/json"})
