@@ -224,7 +224,7 @@ public class TweetController extends AbstractRestHandler
         tweetService.getTweets().forEach(tweet -> isEntityValidJson(tweet, jsonSchemaFile));
         for (Tweet tweet : tweetService.getTweets())
         {
-            if (isEntityValidXml(tweet))
+            if (isEntityValidJson(tweet, jsonSchemaFile))
             {
                 validTweets.add(tweet);
             }
