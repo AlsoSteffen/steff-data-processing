@@ -48,7 +48,7 @@ ___
 ---
 
 1. Make sure you have a local database environment running
-2. Run Steffen.jar in an environment where you can stop it (e.g. intellij)
+2. Run Steffen.jar (target/Steffen.jar) in an environment where you can stop it (e.g. intellij)
 3. If done correctly, the same text should be displayed in the terminal as in step 4 and 5 of the previous section
 
 ---
@@ -66,3 +66,8 @@ Once accessed the following display will be shown:
 ![swagger_img](images/swagger_img.png)
 
 This link documents all the CRUD operations which the API can perform.
+
+---
+#Additions
+
+The visualizer for this API's data can be found [here](https://github.com/AlsoSteffen/steff-data-processing)
