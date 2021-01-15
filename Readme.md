@@ -1,6 +1,5 @@
 # The Steffen API
 
----
 
 This API was created in partial completion of the data processing course of NHL Stenden
 
@@ -13,7 +12,6 @@ This API was created in partial completion of the data processing course of NHL 
 ---
 
 ## Instructions to run from compiler
-___
 1. A local database system is required to run this API.
 2. Install Maven here: [instructions from the Maven website](https://maven.apache.org/install.html)
 3. Make sure all maven dependencies from the [pom.xml](pom.xml) file are installed
@@ -45,8 +43,6 @@ ___
 
 ## Instructions to run from .jar file
 
----
-
 1. Make sure you have a local database environment running
 2. Run Steffen.jar (target/Steffen.jar) in an environment where you can stop it (e.g. intellij)
 3. If done correctly, the same text should be displayed in the terminal as in step 4 and 5 of the previous section
@@ -68,7 +64,7 @@ Once accessed the following display will be shown:
 This link documents all the CRUD operations which the API can perform.
 
 ---
-#Additions
+# Additions
 
 The visualizer for this API's data can be found [here](https://github.com/AlsoSteffen/steffen-visualizer)
 
