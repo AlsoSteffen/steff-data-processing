@@ -70,7 +70,7 @@ This link documents all the CRUD operations which the API can perform.
 ---
 #Additions
 
-The visualizer for this API's data can be found [here](https://github.com/AlsoSteffen/steff-data-processing)
+The visualizer for this API's data can be found [here](https://github.com/AlsoSteffen/steffen-visualizer)
 
 # Schema Location
 
