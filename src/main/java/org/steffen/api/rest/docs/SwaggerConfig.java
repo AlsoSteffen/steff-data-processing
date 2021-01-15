@@ -35,7 +35,8 @@ public class SwaggerConfig
 
     private ApiInfo apiInfo()
     {
-        String description = "This page documents the functions of the Steffen API";
+        String description = "This page documents the functions of the Steffen API, \r\n \r\n" +
+                "All date formats required are in the format dd-MM-yyyy";
         return new ApiInfoBuilder()
                 .title("Steffen API Documentation")
                 .description(description)
