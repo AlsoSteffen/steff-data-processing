@@ -71,3 +71,7 @@ This link documents all the CRUD operations which the API can perform.
 #Additions
 
 The visualizer for this API's data can be found [here](https://github.com/AlsoSteffen/steff-data-processing)
+
+# Schema Location
+
+Schemas used in validating input and output data are located in [src/resources/main/schema](src/main/resources/schema)
